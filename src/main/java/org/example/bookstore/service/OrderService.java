@@ -10,6 +10,6 @@ import java.util.List;
 
 public interface OrderService {
     List<OrderDto> findByUserId(int userId);
-    void saveOrder(List<BuyItem> buyItemList, Integer userId);
+    void saveOrder(List<BuyItem> buyItemList, Integer userId, String name, String address, String phone);
     void deleteOrder(Integer id);
 }

@@ -43,6 +43,9 @@ public class OrderServiceImpl implements OrderService {
             orderDto.setTotalPrice(order.getTotalPrice());
             orderDto.setDate(order.getOrderDate());
             orderDto.setStatus(order.getStatus());
+            orderDto.setName(order.getName());
+            orderDto.setAddress(order.getAddress());
+            orderDto.setPhone(order.getPhone());
             //初始化orderitemdtolist
             List<OrderItemDto> orderItemDtoList = new ArrayList<>();
             List<OrderItem> orderItemList = orderItemDao.findByOrderId(order.getId());
@@ -58,13 +61,16 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void saveOrder(List<BuyItem> buyItemList, Integer userId) {
+    public void saveOrder(List<BuyItem> buyItemList, Integer userId, String name, String address, String phone ) {
         Order order = new Order();
         Float totalPrice = 0f;
         order.setUserId(userId);
         order.setUser(userDao.findById(userId));
         order.setTotalPrice(totalPrice);
         order.setOrderDate(new java.util.Date());
+        order.setName(name);
+        order.setAddress(address);
+        order.setPhone(phone);
         order.setStatus("已完成");
         orderDao.saveOrder(order);
         if (buyItemList != null) {

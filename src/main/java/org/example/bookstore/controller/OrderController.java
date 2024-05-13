@@ -30,9 +30,10 @@ public class OrderController {
         //打印request
         Integer user_id = request.getUserId();
         List<BuyItem> buyItems = request.getItems();
-        System.out.println("user_id: " + user_id);
-        System.out.println("items: " + buyItems);
-        orderService.saveOrder(buyItems,user_id);
+        String name = request.getName();
+        String address = request.getAddress();
+        String phone = request.getPhone();
+        orderService.saveOrder(buyItems,user_id,name,address,phone);
         return "订单确认";
     }
 

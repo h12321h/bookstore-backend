@@ -7,16 +7,23 @@ public class OrderDto {
     private Date date;
     private String status;
     private Float totalPrice;
+
+    private String name;
+    private String address;
+    private String phone;
     private List<OrderItemDto> items;
 
     public OrderDto() {
     }
 
-    public OrderDto(Integer id, Date date, String status, Float totalPrice, List<OrderItemDto> items) {
+    public OrderDto(Integer id, Date date, String status, Float totalPrice, String name, String address, String phone, List<OrderItemDto> items) {
         this.id = id;
         this.date = date;
         this.status = status;
         this.totalPrice = totalPrice;
+        this.name = name;
+        this.address = address;
+        this.phone = phone;
         this.items = items;
     }
 
@@ -63,12 +70,40 @@ public class OrderDto {
         this.items = items;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
     @Override
     public String toString() {
         return "OrderDto{" +
-                "date=" + date +
+                "id=" + id +
+                ", date=" + date +
                 ", status='" + status + '\'' +
                 ", totalPrice=" + totalPrice +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", phone='" + phone + '\'' +
                 ", items=" + items +
                 '}';
     }
