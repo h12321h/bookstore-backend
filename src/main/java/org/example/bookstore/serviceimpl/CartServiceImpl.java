@@ -23,6 +23,9 @@ public class CartServiceImpl implements CartService {
     public List<Cart> findCartByUserId(int userId) {
         //根据外键查找购物车中的书籍
         List<Cart> carts = cartDao.findCartByUserId(userId);
+        for(Cart cart:carts){
+            cart.setBook(bookDao.findBookById(cart.getBookId()));
+        }
         return cartDao.findCartByUserId(userId);
     }
 

@@ -22,4 +22,20 @@ public class BookDaoImpl implements BookDao {
     public List<Book> findAllBooks() {
         return bookRepository.findAll();
     }
+
+    @Override
+    public List<Book> findByTitle(String title) {
+        return bookRepository.findByTitle(title);
+    }
+
+    @Override
+    public List<Book> findByAuthor(String author) {
+        return bookRepository.findByAuthor(author);
+    }
+
+    @Override
+    public List<Book> findByPublisher(String publisher) {
+        return bookRepository.findByPublisher(publisher);
+    }
+
 }

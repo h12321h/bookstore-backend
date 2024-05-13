@@ -23,18 +23,9 @@ public class BookController {
         return bookService.findBookById(id);
     }
 
-//    @GetMapping("/search")
-//    public List<Book> searchBook(@RequestParam("type") String type,@RequestParam("query") String query){
-//        List<Book> result = new ArrayList<>();
-//        for (Book book : books) {
-//            if (type.equals("title") && book.getTitle().toLowerCase().contains(query.toLowerCase())) {
-//                result.add(book);
-//            } else if (type.equals("author") && book.getAuthor().toLowerCase().contains(query.toLowerCase())) {
-//                result.add(book);
-//            } else if (type.equals("publisher") && book.getPublisher().toLowerCase().contains(query.toLowerCase())) {
-//                result.add(book);
-//            }
-//        }
-//        return result;
-//    }
+    @GetMapping("/search/{type}/{query}")
+    public List<Book> searchBook(@PathVariable String type,@PathVariable String query){
+        List<Book> result = bookService.searchBook(type,query);
+        return result;
+    }
 }

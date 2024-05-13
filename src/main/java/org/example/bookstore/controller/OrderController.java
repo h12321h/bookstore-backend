@@ -1,5 +1,6 @@
 package org.example.bookstore.controller;
 
+import org.example.bookstore.dto.OrderDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,7 +21,7 @@ public class OrderController {
     private OrderService orderService;
 
     @PostMapping("/orders")
-    public List<Order> getOrders(@RequestBody Integer user_id) {
+    public List<OrderDto> getOrders(@RequestBody Integer user_id) {
         return orderService.findByUserId(user_id);
     }
 
@@ -33,5 +34,10 @@ public class OrderController {
         System.out.println("items: " + buyItems);
         orderService.saveOrder(buyItems,user_id);
         return "订单确认";
+    }
+
+    @PostMapping("/order/delete")
+    public void deleteOrder(@RequestBody Integer id) {
+        orderService.deleteOrder(id);
     }
 }

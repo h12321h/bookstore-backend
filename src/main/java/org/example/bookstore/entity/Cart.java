@@ -22,7 +22,7 @@ public class Cart {
     private Integer bookId;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "`book_id`", referencedColumnName = "`id`", nullable = false)
+    @JoinColumn(name = "`book_id`", referencedColumnName = "`id`", nullable = true)
     private Book book;
 
     @Column(name = "`quantity`")

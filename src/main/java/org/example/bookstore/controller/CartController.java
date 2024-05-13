@@ -23,15 +23,15 @@ public class CartController {
     }
 
     @PostMapping("/cart/add")
-    public void addBookToCart(@RequestBody AddBookRequest request) {
+    public String addBookToCart(@RequestBody AddBookRequest request) {
         Integer user_id = request.getUserId();
         Integer book_id = request.getBookId();
         boolean state=cartService.addBookToCart(user_id, book_id);
         System.out.println(state);
         if(state){
-            System.out.println("存在，添加数量");
+           return "add";
         }else{
-            System.out.println("不存在，添加新书");
+            return "success";
         }
     }
 

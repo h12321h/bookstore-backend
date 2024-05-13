@@ -16,8 +16,12 @@ public class OrderItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "`book_id`")
+    @Column(name = "`book_id`", insertable = false, updatable = false)
     private Integer bookId;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "`book_id`", referencedColumnName = "`id`", nullable = true)
+    private Book book;
 
     @Column(name = "`quantity`")
     private Integer quantity;
@@ -28,8 +32,8 @@ public class OrderItem {
     @Column(name = "`order_id`", insertable = false, updatable = false)
     private Integer orderId;
 
-    @ManyToOne
-    @JoinColumn(name = "`order_id`", referencedColumnName = "`id`", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "`order_id`", referencedColumnName = "`id`", nullable = true)
     private Order order;
 
     public OrderItem() {
@@ -89,5 +93,12 @@ public class OrderItem {
 
     public void setOrder(Order order) {
         this.order = order;
+    }
+
+    public Book getBook() {
+        return book;
+    }
+    public void setBook(Book book) {
+        this.book = book;
     }
 }

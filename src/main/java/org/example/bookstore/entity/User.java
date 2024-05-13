@@ -19,7 +19,7 @@ public class User {
     private Integer id;
 
     @Column(name = "`name`")
-    private String name;
+    private String username;
 
     @Column(name = "`avatar`")
     private String avatar;
@@ -41,7 +41,7 @@ public class User {
 
     public User(Integer id, String name, String avatar, Integer age, String contact, String introduction, String password) {
         this.id = id;
-        this.name = name;
+        this.username = name;
         this.avatar = avatar;
         this.age = age;
         this.contact = contact;
@@ -58,11 +58,11 @@ public class User {
     }
 
     public String getName() {
-        return name;
+        return username;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.username = name;
     }
 
     public String getAvatar() {

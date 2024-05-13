@@ -117,4 +117,17 @@ public class Book {
         this.cover_image = cover_image;
     }
 
+    @Override
+    public String toString() {
+        return "Book{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", author='" + author + '\'' +
+                ", publisher='" + publisher + '\'' +
+                ", introduction='" + introduction + '\'' +
+                ", price=" + price +
+                ", stock=" + stock +
+                ", cover_image='" + cover_image + '\'' +
+                '}';
+    }
 }

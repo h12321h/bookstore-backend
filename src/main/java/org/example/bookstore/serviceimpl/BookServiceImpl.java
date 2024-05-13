@@ -22,4 +22,17 @@ public class BookServiceImpl implements BookService {
     public List<Book> findAll() {
         return bookDao.findAllBooks();
     }
+
+    @Override
+    public List<Book> searchBook(String type, String query) {
+        if (type.equals("title")) {
+            return bookDao.findByTitle(query);
+        } else if (type.equals("author")) {
+            return bookDao.findByAuthor(query);
+        } else if (type.equals("publisher")) {
+            return bookDao.findByPublisher(query);
+        } else {
+            return null;
+        }
+    }
 }
