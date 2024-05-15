@@ -9,17 +9,14 @@ import jakarta.persistence.*;
 @Table(name = "`cart`")
 @Access(value = AccessType.FIELD)
 @JsonIgnoreProperties(value = {"handler","hibernateLazyInitializer","fieldHandler"})
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
+//@JsonIdentityInfo(
+//        generator = ObjectIdGenerators.PropertyGenerator.class,
+//        property = "id")
 public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "`id`")
     private Integer id;
-
-    @Column(name = "`book_id`", insertable = false, updatable = false)
-    private Integer bookId;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "`book_id`", referencedColumnName = "`id`", nullable = true)
@@ -28,33 +25,28 @@ public class Cart {
     @Column(name = "`quantity`")
     private Integer quantity;
 
-    @Column(name = "`user_id`")
-    private Integer userId;
+//    @Column(name = "`user_id`")
+//    private Integer userId;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "`user_id`", referencedColumnName = "`id`", nullable = true)
+    private User user;
 
     public Cart() {
     }
 
-    public Cart(int id, int book_id, int quantity, int user_id) {
+    public Cart(Integer id, Book book, Integer quantity, User user) {
         this.id = id;
-        this.bookId = book_id;
+        this.book = book;
         this.quantity = quantity;
-        this.userId = user_id;
+        this.user = user;
     }
-
     public int getId() {
         return id;
     }
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getBookId() {
-        return bookId;
-    }
-
-    public void setBookId(int book_id) {
-        this.bookId = book_id;
     }
 
     public Book getBook() {
@@ -74,11 +66,20 @@ public class Cart {
         this.quantity = quantity;
     }
 
-    public int getUserId() {
-        return userId;
+//    public int getUserId() {
+//        return userId;
+//    }
+//
+//    public void setUserId(int user_id) {
+//        this.userId = user_id;
+//    }
+
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(int user_id) {
-        this.userId = user_id;
+    public void setUser(User user) {
+        this.user = user;
     }
+
 }

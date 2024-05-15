@@ -7,17 +7,17 @@ import jakarta.persistence.*;
 
 @Entity
 @JsonIgnoreProperties(value = {"handler","hibernateLazyInitializer","fieldHandler"})
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
+//@JsonIdentityInfo(
+//        generator = ObjectIdGenerators.PropertyGenerator.class,
+//        property = "id")
 @Table(name = "`order_item`")
 public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "`book_id`", insertable = false, updatable = false)
-    private Integer bookId;
+//    @Column(name = "`book_id`", insertable = false, updatable = false)
+//    private Integer bookId;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "`book_id`", referencedColumnName = "`id`", nullable = true)
@@ -29,8 +29,8 @@ public class OrderItem {
     @Column(name = "`price`")
     private Float price;
 
-    @Column(name = "`order_id`", insertable = false, updatable = false)
-    private Integer orderId;
+//    @Column(name = "`order_id`", insertable = false, updatable = false)
+//    private Integer orderId;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "`order_id`", referencedColumnName = "`id`", nullable = true)
@@ -39,12 +39,12 @@ public class OrderItem {
     public OrderItem() {
     }
 
-    public OrderItem(Integer id, Integer bookId, Integer quantity, Float price, Integer orderId) {
+    public OrderItem(Integer id, Book book, Integer quantity, Float price, Order order) {
         this.id = id;
-        this.bookId = bookId;
+        this.book = book;
         this.quantity = quantity;
         this.price = price;
-        this.orderId = orderId;
+        this.order = order;
     }
 
     public Integer getId() {
@@ -55,13 +55,13 @@ public class OrderItem {
         this.id = id;
     }
 
-    public Integer getBookId() {
-        return bookId;
-    }
-
-    public void setBookId(Integer bookId) {
-        this.bookId = bookId;
-    }
+//    public Integer getBookId() {
+//        return bookId;
+//    }
+//
+//    public void setBookId(Integer bookId) {
+//        this.bookId = bookId;
+//    }
 
     public Integer getQuantity() {
         return quantity;
@@ -79,13 +79,13 @@ public class OrderItem {
         this.price = price;
     }
 
-    public Integer getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(Integer orderId) {
-        this.orderId = orderId;
-    }
+//    public Integer getOrderId() {
+//        return orderId;
+//    }
+//
+//    public void setOrderId(Integer orderId) {
+//        this.orderId = orderId;
+//    }
 
     public Order getOrder() {
         return order;

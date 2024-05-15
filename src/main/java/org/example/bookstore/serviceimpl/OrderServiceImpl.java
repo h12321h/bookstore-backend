@@ -48,9 +48,9 @@ public class OrderServiceImpl implements OrderService {
             orderDto.setPhone(order.getPhone());
             //初始化orderitemdtolist
             List<OrderItemDto> orderItemDtoList = new ArrayList<>();
-            List<OrderItem> orderItemList = orderItemDao.findByOrderId(order.getId());
+            List<OrderItem> orderItemList = order.getOrderItems();
             for(OrderItem orderItem: orderItemList){
-                Book book = bookDao.findBookById(orderItem.getBookId());
+                Book book = orderItem.getBook();
                 OrderItemDto orderItemDto = new OrderItemDto(book.getTitle(), orderItem.getPrice(), orderItem.getQuantity());
                 orderItemDtoList.add(orderItemDto);
             }
@@ -64,7 +64,6 @@ public class OrderServiceImpl implements OrderService {
     public void saveOrder(List<BuyItem> buyItemList, Integer userId, String name, String address, String phone ) {
         Order order = new Order();
         Float totalPrice = 0f;
-        order.setUserId(userId);
         order.setUser(userDao.findById(userId));
         order.setTotalPrice(totalPrice);
         order.setOrderDate(new java.util.Date());
@@ -76,10 +75,8 @@ public class OrderServiceImpl implements OrderService {
         if (buyItemList != null) {
             for (BuyItem buyItem : buyItemList) {
                 OrderItem orderItem = new OrderItem();
-                orderItem.setBookId(buyItem.getBookId());
                 orderItem.setQuantity(buyItem.getQuantity());
                 orderItem.setPrice(buyItem.getPrice());
-                orderItem.setOrderId(order.getId());
                 orderItem.setOrder(order);
                 orderItem.setBook(bookDao.findBookById(buyItem.getBookId()));
                 orderItemDao.saveOrderItem(orderItem);

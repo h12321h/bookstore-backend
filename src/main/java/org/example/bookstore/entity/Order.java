@@ -14,9 +14,9 @@ import java.util.List;
 @Table(name = "`order`")
 @Access(value = AccessType.FIELD)
 @JsonIgnoreProperties(value = {"handler","hibernateLazyInitializer","fieldHandler"})
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
+//@JsonIdentityInfo(
+//        generator = ObjectIdGenerators.PropertyGenerator.class,
+//        property = "id")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,8 +40,8 @@ public class Order {
     @Column(name="`phone`")
     private String phone;
 
-    @Column(name = "`user_id`", insertable = false, updatable = false)
-    private Integer userId;
+//    @Column(name = "`user_id`", insertable = false, updatable = false)
+//    private Integer userId;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems;
@@ -53,12 +53,11 @@ public class Order {
     public Order() {
     }
 
-    public Order(Integer id, Date order_date, Float total_price, String status, Integer user_id, String name, String address, String phone) {
+    public Order(Integer id, Date order_date, Float total_price, String status, String name, String address, String phone) {
         this.id = id;
         this.orderDate = order_date;
         this.totalPrice = total_price;
         this.status = status;
-        this.userId = user_id;
         this.name = name;
         this.address = address;
         this.phone = phone;
@@ -120,13 +119,13 @@ public class Order {
         this.phone = phone;
     }
 
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer user_id) {
-        this.userId = user_id;
-    }
+//    public Integer getUserId() {
+//        return userId;
+//    }
+//
+//    public void setUserId(Integer user_id) {
+//        this.userId = user_id;
+//    }
 
     public User getUser() {
         return user;
