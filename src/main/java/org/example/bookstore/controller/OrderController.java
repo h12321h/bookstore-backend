@@ -1,5 +1,6 @@
 package org.example.bookstore.controller;
 
+import jakarta.servlet.http.HttpSession;
 import org.example.bookstore.dto.OrderDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +13,8 @@ import org.example.bookstore.service.OrderService;
 import org.example.bookstore.dto.AddOrderRequest;
 import org.example.bookstore.dto.BuyItem;
 
+import org.example.bookstore.utils.SessionUtils;
+
 import java.util.List;
 
 
@@ -22,6 +25,11 @@ public class OrderController {
 
     @PostMapping("/orders")
     public List<OrderDto> getOrders(@RequestBody Integer user_id) {
+        HttpSession session = SessionUtils.getSession();
+        if (session != null ) {
+            user_id = (Integer) session.getAttribute("userId");
+           // System.out.println("order  ID: " + user_id);
+        }
         return orderService.findByUserId(user_id);
     }
 
@@ -29,6 +37,11 @@ public class OrderController {
     public String addOrder(@RequestBody AddOrderRequest request) {
         //打印request
         Integer user_id = request.getUserId();
+        //靠session获取id
+        HttpSession session = SessionUtils.getSession();
+        if (session != null ) {
+            user_id = (Integer) session.getAttribute("userId");
+        }
         List<BuyItem> buyItems = request.getItems();
         String name = request.getName();
         String address = request.getAddress();

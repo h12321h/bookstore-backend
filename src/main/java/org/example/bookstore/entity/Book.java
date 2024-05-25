@@ -31,7 +31,7 @@ public class Book {
     private String introduction;
 
     @Column(name = "`price`")
-    private Float price;
+    private Float price;//bigdecimal
 
     @Column(name = "`stock`")
     private Integer stock;
