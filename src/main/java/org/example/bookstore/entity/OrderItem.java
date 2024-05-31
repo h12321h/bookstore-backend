@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
+
 @Entity
 @JsonIgnoreProperties(value = {"handler","hibernateLazyInitializer","fieldHandler"})
 //@JsonIdentityInfo(
@@ -27,7 +29,7 @@ public class OrderItem {
     private Integer quantity;
 
     @Column(name = "`price`")
-    private Float price;
+    private BigDecimal price;
 
 //    @Column(name = "`order_id`", insertable = false, updatable = false)
 //    private Integer orderId;
@@ -39,7 +41,7 @@ public class OrderItem {
     public OrderItem() {
     }
 
-    public OrderItem(Integer id, Book book, Integer quantity, Float price, Order order) {
+    public OrderItem(Integer id, Book book, Integer quantity, BigDecimal price, Order order) {
         this.id = id;
         this.book = book;
         this.quantity = quantity;
@@ -71,11 +73,11 @@ public class OrderItem {
         this.quantity = quantity;
     }
 
-    public Float getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Float price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

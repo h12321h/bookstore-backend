@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "`book`")
 @Access(value = AccessType.FIELD)
@@ -31,7 +33,7 @@ public class Book {
     private String introduction;
 
     @Column(name = "`price`")
-    private Float price;//bigdecimal
+    private BigDecimal price;//bigdecimal
 
     @Column(name = "`stock`")
     private Integer stock;
@@ -39,10 +41,16 @@ public class Book {
     @Column(name = "`cover_image`")
     private String cover_image;
 
+    @Column(name = "`isbn`")
+    private String isbn;
+
+    @Column(name="`deleted`")
+    private Boolean deleted;
+
     public Book() {
     }
 
-    public Book(int id, String title, String author, String publisher, String introduction, float price, int stock, String cover_image) {
+    public Book(Integer id, String title, String author, String publisher, String introduction, BigDecimal price, Integer stock, String cover_image, String isbn) {
         this.id = id;
         this.title = title;
         this.author = author;
@@ -51,8 +59,23 @@ public class Book {
         this.price = price;
         this.stock = stock;
         this.cover_image = cover_image;
+        this.isbn = isbn;
     }
 
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
     public int getId() {
         return id;
     }
@@ -93,11 +116,11 @@ public class Book {
         this.introduction = introduction;
     }
 
-    public float getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
@@ -128,6 +151,7 @@ public class Book {
                 ", price=" + price +
                 ", stock=" + stock +
                 ", cover_image='" + cover_image + '\'' +
+                ", isbn='" + isbn + '\'' +
                 '}';
     }
 }

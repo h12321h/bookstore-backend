@@ -14,7 +14,9 @@ import org.example.bookstore.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -31,13 +33,8 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private BookDao bookDao;
 
-    @Override
-    public List<OrderDto> findByUserId(int userId) {
-        //初始化返回值
-        List<OrderDto> orderDtoList = new ArrayList<>();
-        List<Order> orderList = orderDao.findByUserId(userId);
+    private void toDto(List<Order> orderList, List<OrderDto> orderDtoList){
         for(Order order: orderList){
-            //初始化orderdto
             OrderDto orderDto = new OrderDto();
             orderDto.setId(order.getId());
             orderDto.setTotalPrice(order.getTotalPrice());
@@ -46,7 +43,6 @@ public class OrderServiceImpl implements OrderService {
             orderDto.setName(order.getName());
             orderDto.setAddress(order.getAddress());
             orderDto.setPhone(order.getPhone());
-            //初始化orderitemdtolist
             List<OrderItemDto> orderItemDtoList = new ArrayList<>();
             List<OrderItem> orderItemList = order.getOrderItems();
             for(OrderItem orderItem: orderItemList){
@@ -57,13 +53,21 @@ public class OrderServiceImpl implements OrderService {
             orderDto.setItems(orderItemDtoList);
             orderDtoList.add(orderDto);
         }
+    }
+
+    @Override
+    public List<OrderDto> findByUserId(int userId) {
+        //初始化返回值
+        List<OrderDto> orderDtoList = new ArrayList<>();
+        List<Order> orderList = orderDao.findByUserId(userId);
+        toDto(orderList, orderDtoList);
         return orderDtoList;
     }
 
     @Override
-    public void saveOrder(List<BuyItem> buyItemList, Integer userId, String name, String address, String phone ) {
+    public Boolean saveOrder(List<BuyItem> buyItemList, Integer userId, String name, String address, String phone ) {
         Order order = new Order();
-        Float totalPrice = 0f;
+        BigDecimal totalPrice = BigDecimal.valueOf(0);
         order.setUser(userDao.findById(userId));
         order.setTotalPrice(totalPrice);
         order.setOrderDate(new java.util.Date());
@@ -80,15 +84,44 @@ public class OrderServiceImpl implements OrderService {
                 orderItem.setOrder(order);
                 orderItem.setBook(bookDao.findBookById(buyItem.getBookId()));
                 orderItemDao.saveOrderItem(orderItem);
-                totalPrice += orderItem.getPrice() * orderItem.getQuantity();
+                if(!bookDao.decreaseStock(buyItem.getBookId(), buyItem.getQuantity())){
+                    return false;
+                }
+                totalPrice = totalPrice.add(buyItem.getPrice().multiply(BigDecimal.valueOf(buyItem.getQuantity())));
+               // totalPrice+=orderItem.getPrice().multiply(BigDecimal.valueOf(orderItem.getQuantity()));
             }
         }
         order.setTotalPrice(totalPrice);
         orderDao.saveOrder(order);
+        return true;
     }
 
     @Override
     public void deleteOrder(Integer id) {
         orderDao.deleteById(id);
+    }
+    
+    @Override
+    public List<OrderDto> findByUserIdAndBookName(Integer userId, String bookName) {
+        List<OrderDto> orderDtoList = new ArrayList<>();
+        List<Order> orderList = orderDao.findByUserIdAndBookName(userId, bookName);
+        toDto(orderList, orderDtoList);
+        return orderDtoList;
+    }
+
+    @Override
+    public List<OrderDto> findByUserIdAndDate(Integer userId, Date startDate, Date endDate) {
+        List<OrderDto> orderDtoList = new ArrayList<>();
+        List<Order> orderList = orderDao.findByUserIdAndDate(userId, startDate, endDate);
+        toDto(orderList, orderDtoList);
+        return orderDtoList;
+    }
+
+    @Override
+    public List<OrderDto> findByUserIdAndBookNameAndDate(Integer userId, String bookName, Date startDate, Date endDate) {
+        List<OrderDto> orderDtoList = new ArrayList<>();
+        List<Order> orderList = orderDao.findByUserIdAndBookNameAndDate(userId, bookName, startDate, endDate);
+        toDto(orderList, orderDtoList);
+        return orderDtoList;
     }
 }

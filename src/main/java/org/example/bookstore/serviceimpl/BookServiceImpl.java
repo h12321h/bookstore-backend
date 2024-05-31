@@ -1,10 +1,13 @@
 package org.example.bookstore.serviceimpl;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import org.example.bookstore.dao.BookDao;
 import org.example.bookstore.entity.Book;
 import org.example.bookstore.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 
 import java.util.List;
 
@@ -19,8 +22,9 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<Book> findAll() {
-        return bookDao.findAllBooks();
+    public List<Book> findAll(Pageable pageable) {
+        Page<Book> books= bookDao.findAllBooks(pageable);
+        return books.getContent();
     }
 
     @Override
@@ -34,5 +38,10 @@ public class BookServiceImpl implements BookService {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public Integer getBooksNum() {
+        return bookDao.getBooksNum();
     }
 }

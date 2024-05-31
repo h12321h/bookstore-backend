@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import org.example.bookstore.entity.OrderItem;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class Order {
     private Date orderDate;
 
     @Column(name = "`total_price`")
-    private Float totalPrice;
+    private BigDecimal totalPrice;
 
     @Column(name = "`status`")
     private String status;
@@ -53,7 +54,7 @@ public class Order {
     public Order() {
     }
 
-    public Order(Integer id, Date order_date, Float total_price, String status, String name, String address, String phone) {
+    public Order(Integer id, Date order_date, BigDecimal total_price, String status, String name, String address, String phone) {
         this.id = id;
         this.orderDate = order_date;
         this.totalPrice = total_price;
@@ -79,11 +80,11 @@ public class Order {
         this.orderDate = order_date;
     }
 
-    public Float getTotalPrice() {
+    public BigDecimal getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(Float total_price) {
+    public void setTotalPrice(BigDecimal total_price) {
         this.totalPrice = total_price;
     }
 

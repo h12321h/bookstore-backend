@@ -1,14 +1,16 @@
 package org.example.bookstore.dto;
 
+import java.math.BigDecimal;
+
 public class BuyItem {
     private Integer bookId;
-    private Float price;
+    private BigDecimal price;
     private Integer quantity;
 
     public BuyItem() {
     }
 
-    public BuyItem(Integer bookId, Float price, Integer quantity) {
+    public BuyItem(Integer bookId, BigDecimal price, Integer quantity) {
         this.bookId = bookId;
         this.price = price;
         this.quantity = quantity;
@@ -31,11 +33,11 @@ public class BuyItem {
         this.quantity = quantity;
     }
 
-    public Float getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Float price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

@@ -1,12 +1,13 @@
 package org.example.bookstore.dto;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 public class OrderDto {
     private Integer id;
     private Date date;
     private String status;
-    private Float totalPrice;
+    private BigDecimal totalPrice;
 
     private String name;
     private String address;
@@ -16,7 +17,7 @@ public class OrderDto {
     public OrderDto() {
     }
 
-    public OrderDto(Integer id, Date date, String status, Float totalPrice, String name, String address, String phone, List<OrderItemDto> items) {
+    public OrderDto(Integer id, Date date, String status, BigDecimal totalPrice, String name, String address, String phone, List<OrderItemDto> items) {
         this.id = id;
         this.date = date;
         this.status = status;
@@ -54,11 +55,11 @@ public class OrderDto {
         this.status = status;
     }
 
-    public Float getTotalPrice() {
+    public BigDecimal getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(Float totalPrice) {
+    public void setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
     }
 

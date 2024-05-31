@@ -33,20 +33,32 @@ public class User {
     @Column(name = "`introduction`")
     private String introduction;
 
-    @Column(name = "`password`")
-    private String password;
+    @Column(name="`type`")
+    private Boolean type;
+
+    @Column(name="`banned`")
+    private Boolean banned;
+
+    @OneToOne(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private UserAuth userAuth;
 
     public User() {
     }
 
-    public User(Integer id, String name, String avatar, Integer age, String contact, String introduction, String password) {
-        this.id = id;
-        this.username = name;
-        this.avatar = avatar;
-        this.age = age;
-        this.contact = contact;
-        this.introduction = introduction;
-        this.password = password;
+    public Boolean getType() {
+        return type;
+    }
+
+    public void setType(Boolean type) {
+        this.type = type;
+    }
+
+    public UserAuth getUserAuth() {
+        return userAuth;
+    }
+
+    public void setUserAuth(UserAuth userAuth) {
+        this.userAuth = userAuth;
     }
 
     public Integer getId() {
@@ -57,12 +69,12 @@ public class User {
         this.id = id;
     }
 
-    public String getName() {
+    public String getUsername() {
         return username;
     }
 
-    public void setName(String name) {
-        this.username = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getAvatar() {
@@ -97,11 +109,27 @@ public class User {
         this.introduction = introduction;
     }
 
-    public String getPassword() {
-        return password;
+    public Boolean getBanned() {
+        return banned;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setBanned(Boolean banned) {
+        this.banned = banned;
+    }
+
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", avatar='" + avatar + '\'' +
+                ", age=" + age +
+                ", contact='" + contact + '\'' +
+                ", introduction='" + introduction + '\'' +
+                ", type=" + type +
+                ", banned=" + banned +
+                ", userAuth=" + userAuth +
+                '}';
     }
 }

@@ -4,6 +4,9 @@ import org.example.bookstore.dao.BookDao;
 import org.example.bookstore.entity.Book;
 import org.example.bookstore.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -19,8 +22,10 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public List<Book> findAllBooks() {
-        return bookRepository.findAll();
+    public Page<Book> findAllBooks(Pageable pageable) {
+        Specification<Book> spec = (root, query, cb) -> cb.equal(root.get("deleted"), false);
+        Page<Book> page = bookRepository.findAll(spec, pageable);
+        return page;
     }
 
     @Override
@@ -38,4 +43,33 @@ public class BookDaoImpl implements BookDao {
         return bookRepository.findByPublisher(publisher);
     }
 
+    @Override
+    public void saveBook(Book book) {
+        bookRepository.save(book);
+    }
+
+    @Override
+    public void deleteBook(int id) {
+        bookRepository.deleteById(id);
+    }
+
+    @Override
+    public Boolean decreaseStock(int id, int quantity) {
+        Book book = bookRepository.findById(id).orElse(null);
+        if (book == null) {
+            return false;
+        }
+        int stock = book.getStock();
+        if (stock < quantity) {
+            return false;
+        }
+        book.setStock(stock - quantity);
+        bookRepository.save(book);
+        return true;
+    }
+
+    @Override
+    public Integer getBooksNum() {
+        return bookRepository.getBooksNum();
+    }
 }

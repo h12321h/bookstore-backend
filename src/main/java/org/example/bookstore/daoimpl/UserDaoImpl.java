@@ -20,6 +20,8 @@ public class UserDaoImpl implements UserDao{
 
     @Override
     public User findByUsername(String username) {
+        //输出username
+        System.out.println(username);
         return userRepository.findByUsername(username);
     }
 
