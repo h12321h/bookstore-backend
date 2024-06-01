@@ -1,6 +1,8 @@
 package org.example.bookstore.repository;
 
 import org.example.bookstore.entity.Book;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -10,7 +12,9 @@ import java.util.List;
 
 
 public interface BookRepository extends JpaRepository<Book, Integer>, JpaSpecificationExecutor<Book> {
-    List<Book> findByTitle(String title);
+
+    @Query("SELECT b FROM Book b WHERE b.title = :title AND b.deleted = false")
+    Page<Book> findByTitle(String title, Pageable pageable);
     List<Book> findByAuthor(String author);
     List<Book> findByPublisher(String publisher);
 
@@ -19,4 +23,6 @@ public interface BookRepository extends JpaRepository<Book, Integer>, JpaSpecifi
     Integer getBooksNum();
 
 
+    @Query("SELECT COUNT(b) FROM Book b WHERE b.title = :title AND b.deleted = false")
+    Integer getNumByTitle(String title);
 }

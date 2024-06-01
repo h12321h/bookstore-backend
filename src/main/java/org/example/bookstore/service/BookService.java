@@ -1,6 +1,5 @@
 package org.example.bookstore.service;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.example.bookstore.entity.Book;
 
@@ -11,7 +10,13 @@ public interface BookService {
 
     List<Book> findAll(Pageable pageable);
 
-    List<Book> searchBook(String type, String query);
+    List<Book> searchBook(String type, String query, Pageable pageable);
 
     Integer getBooksNum();
+
+    Integer getNumByTitle(String title);
+
+    Boolean deleteBook(int id);
+
+    void saveBook(Book book);
 }

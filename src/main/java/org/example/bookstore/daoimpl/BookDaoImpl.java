@@ -29,8 +29,8 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public List<Book> findByTitle(String title) {
-        return bookRepository.findByTitle(title);
+    public Page<Book> findByTitle(String title,Pageable pageable) {
+        return bookRepository.findByTitle(title,pageable);
     }
 
     @Override
@@ -49,8 +49,14 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public void deleteBook(int id) {
-        bookRepository.deleteById(id);
+    public Boolean deleteBook(int id) {
+        Book book = bookRepository.findById(id).orElse(null);
+        if (book != null) {
+            book.setDeleted(true);
+            bookRepository.save(book);
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -71,5 +77,10 @@ public class BookDaoImpl implements BookDao {
     @Override
     public Integer getBooksNum() {
         return bookRepository.getBooksNum();
+    }
+
+    @Override
+    public Integer getNumByTitle(String title) {
+        return bookRepository.getNumByTitle(title);
     }
 }

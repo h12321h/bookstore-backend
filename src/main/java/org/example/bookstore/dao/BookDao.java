@@ -11,15 +11,17 @@ public interface BookDao {
     Book findBookById(int id);
     Page<Book> findAllBooks(Pageable pageable);
 
-    List<Book> findByTitle(String title);
+    public Page<Book> findByTitle(String title,Pageable pageable) ;
     List<Book> findByAuthor(String author);
     List<Book> findByPublisher(String publisher);
 
     void saveBook(Book book);
 
-    void deleteBook(int id);
+    Boolean deleteBook(int id);
 
     Boolean decreaseStock(int id, int quantity);
 
     Integer getBooksNum();
+
+    Integer getNumByTitle(String title);
 }

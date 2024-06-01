@@ -46,6 +46,16 @@
             <artifactId>spring-context</artifactId>
             <version>6.1.6</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-core</artifactId>
+            <version>9.0.45</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-core</artifactId>
+            <version>10.1.20</version>
+        </dependency>
 
     </dependencies>
 

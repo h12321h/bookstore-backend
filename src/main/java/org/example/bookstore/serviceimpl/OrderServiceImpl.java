@@ -4,14 +4,13 @@ import org.example.bookstore.dao.OrderDao;
 import org.example.bookstore.dao.OrderItemDao;
 import org.example.bookstore.dao.UserDao;
 import org.example.bookstore.dao.BookDao;
-import org.example.bookstore.dto.BuyItem;
-import org.example.bookstore.dto.OrderDto;
-import org.example.bookstore.dto.OrderItemDto;
+import org.example.bookstore.dto.*;
 import org.example.bookstore.entity.Order;
 import org.example.bookstore.entity.OrderItem;
 import org.example.bookstore.entity.Book;
 import org.example.bookstore.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -124,4 +123,122 @@ public class OrderServiceImpl implements OrderService {
         toDto(orderList, orderDtoList);
         return orderDtoList;
     }
+
+    @Override
+    public List<BookStatisticDto> getBookStatistic(Integer userId, Date startDate, Date endDate) {
+        List<BookStatisticDto> bookStatisticDtoList = new ArrayList<>();
+        List<Object[]> bookList = orderDao.getBookStatisticByUserId(userId, startDate, endDate);
+        Integer i = 0;
+        for(Object[] book: bookList){
+            BookStatisticDto bookStatisticDto = new BookStatisticDto();
+            bookStatisticDto.setName((String)book[0]);
+            bookStatisticDto.setQuantity((Long)book[1]);
+            bookStatisticDto.setPrice((BigDecimal)book[2]);
+            bookStatisticDto.setKey(++i);
+            bookStatisticDtoList.add(bookStatisticDto);
+        }
+        return bookStatisticDtoList;
+    }
+
+    @Override
+    public List<OrderDto> findAll(Pageable pageable) {
+        List<OrderDto> orderDtoList = new ArrayList<>();
+        List<Order> orderList = orderDao.findAll(pageable).getContent();
+        toDto(orderList, orderDtoList);
+        return orderDtoList;
+    }
+
+    @Override
+    public List<OrderDto> findByBookName(Pageable pageable, String bookName) {
+        List<OrderDto> orderDtoList = new ArrayList<>();
+        List<Order> orderList = orderDao.findByBookName(pageable, bookName).getContent();
+        toDto(orderList, orderDtoList);
+        return orderDtoList;
+    }
+
+    @Override
+    public List<OrderDto> findByDate(Pageable pageable, Date startDate, Date endDate) {
+        List<OrderDto> orderDtoList = new ArrayList<>();
+        List<Order> orderList = orderDao.findByDate(pageable, startDate, endDate).getContent();
+        toDto(orderList, orderDtoList);
+        return orderDtoList;
+    }
+
+    @Override
+    public List<OrderDto> findByBookNameAndDate(Pageable pageable, String bookName, Date startDate, Date endDate) {
+        List<OrderDto> orderDtoList = new ArrayList<>();
+        List<Order> orderList = orderDao.findByBookNameAndDate(pageable, bookName, startDate, endDate).getContent();
+        toDto(orderList, orderDtoList);
+        return orderDtoList;
+    }
+
+    @Override
+    public Integer getOrdersNum() {
+        return orderDao.getOrdersNum();
+    }
+
+    @Override
+    public Integer getOrdersNumByBookName(String bookName) {
+        return orderDao.getOrdersNumByBookName(bookName);
+    }
+
+    @Override
+    public Integer getOrdersNumByDate(Date startDate, Date endDate) {
+        return orderDao.getOrdersNumByDate(startDate, endDate);
+    }
+
+    @Override
+    public Integer getOrdersNumByBookNameAndDate(String bookName, Date startDate, Date endDate) {
+        return orderDao.getOrdersNumByBookNameAndDate(bookName, startDate, endDate);
+    }
+
+    @Override
+    public List<BookRangeDto> getRangeBook(Pageable pageable, Date startDate, Date endDate) {
+        List<BookRangeDto> bookRangeDtoList = new ArrayList<>();
+        List<Object[]> bookList = orderDao.getRangeBook(pageable, startDate, endDate);
+        for(Object[] book: bookList){
+            BookRangeDto bookRangeDto = new BookRangeDto();
+            bookRangeDto.setTitle((String)book[0]);
+            bookRangeDto.setQuantity((Long)book[1]);
+            bookRangeDto.setRange((Long)book[2]);
+            bookRangeDtoList.add(bookRangeDto);
+        }
+        return bookRangeDtoList;
+    }
+
+    @Override
+    public Integer getRangeBookNum(Date startDate, Date endDate) {
+        return orderDao.getRangeBookNum(startDate, endDate);
+    }
+
+    @Override
+    public List<UserRangeDto> getRangeUser(Pageable pageable, Date startDate, Date endDate) {
+        List<UserRangeDto> userRangeDtoList = new ArrayList<>();
+        List<Object[]> userList = orderDao.getRangeUser(pageable, startDate, endDate);
+        for(Object[] user: userList){
+            UserRangeDto userRangeDto = new UserRangeDto();
+            userRangeDto.setUsername((String)user[0]);
+            userRangeDto.setContact((String)user[1]);
+            userRangeDto.setPrice((BigDecimal) user[2]);
+            userRangeDto.setRange((Long)user[3]);
+            userRangeDtoList.add(userRangeDto);
+        }
+        return userRangeDtoList;
+    }
+
+    @Override
+    public Integer getRangeUserNum(Date startDate, Date endDate) {
+        return orderDao.getRangeUserNum(startDate, endDate);
+    }
+
+    @Override
+    public Integer getBookStatisticNum(Integer userId, Date startDate, Date endDate) {
+        return orderDao.getBookStatisticNum(userId, startDate, endDate);
+    }
+
+    @Override
+    public BigDecimal getBookStatisticPrice(Integer userId, Date startDate, Date endDate) {
+        return orderDao.getBookStatisticPrice(userId, startDate, endDate);
+    }
+
 }

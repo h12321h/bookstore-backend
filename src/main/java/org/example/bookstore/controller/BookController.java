@@ -3,10 +3,7 @@ package org.example.bookstore.controller;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 import org.example.bookstore.entity.Book;
 import org.example.bookstore.service.BookService;
 import org.example.bookstore.utils.SessionUtils;
@@ -32,13 +29,34 @@ public class BookController {
     }
 
     @GetMapping("/search/{type}/{query}")
-    public List<Book> searchBook(@PathVariable String type,@PathVariable String query){
-        List<Book> result = bookService.searchBook(type,query);
+    public List<Book> searchBook(@PathVariable String type,@PathVariable String query,@RequestParam int page, @RequestParam int size){
+        Pageable pageable = PageRequest.of(page, size);
+        List<Book> result = bookService.searchBook(type,query,pageable);
         return result;
     }
 
     @GetMapping("/books/num")
     public Integer getBooksNum() {
         return bookService.getBooksNum();
+    }
+
+    @GetMapping("/num/{title}")
+    public Integer getNumByTitle(@PathVariable String title) {
+        return bookService.getNumByTitle(title);
+    }
+
+    @DeleteMapping("/book/{id}")
+    public String deleteBook(@PathVariable int id) {
+        if(bookService.deleteBook(id))
+            return "success";
+        else
+            return "fail";
+    }
+
+    @PostMapping("/book/save")
+    public String saveBook(@RequestBody Book book) {
+        book.setDeleted(false);
+        bookService.saveBook(book);
+        return "success";
     }
 }

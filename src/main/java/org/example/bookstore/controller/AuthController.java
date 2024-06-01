@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.Map;
 
+
 @RestController
 public class AuthController {
 
@@ -22,11 +23,12 @@ public class AuthController {
         if (userService.checkUser(username, password)) {
             User user= userService.findUserByUsername(username);
             Integer id = user.getId();
+            Boolean isAdmin = user.getType();
             if(user.getBanned()){
                 return -1;
             }
             //System.out.println("User ID: " + id);
-            SessionUtils.setSession(id);
+            SessionUtils.setSession(id,isAdmin);
             return id;
         } else {
             return 0;
@@ -45,9 +47,28 @@ public class AuthController {
     }
 
     @GetMapping("/check_login")
+    @ResponseBody
     public Map<String, Boolean> checkLogin() {
         HttpSession session = SessionUtils.getSession();
         boolean isLogin = session != null && session.getAttribute("userId") != null;
         return Map.of("isLogin", isLogin);
     }
+
+//    export async function checkIdentity() {
+//        return fetch(`${PREFIX}/check_identity`, {
+//            method: 'GET',
+//                    credentials: 'include'
+//        })
+//        .then(response => response.json())
+//        .catch(error => console.error('Error checking identity:', error));
+//    }
+
+    @GetMapping("/check_identity")
+    @ResponseBody
+    public Map<String,Boolean> checkIdentity() {
+        HttpSession session = SessionUtils.getSession();
+        Boolean  isAdmin = session != null && session.getAttribute("userId") != null && session.getAttribute("isAdmin") == Boolean.TRUE;
+        return Map.of("isAdmin", isAdmin);
+    }
+
 }

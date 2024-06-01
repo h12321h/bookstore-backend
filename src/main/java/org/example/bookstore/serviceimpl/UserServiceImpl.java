@@ -6,9 +6,14 @@ import org.example.bookstore.entity.UserAuth;
 import org.example.bookstore.service.UserService;
 import org.example.bookstore.utils.SessionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.example.bookstore.dto.UserDto;
 import jakarta.servlet.http.HttpSession;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -21,7 +26,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto findUserById(int id) {
         User user= userDao.findById(id);
-        UserDto userDto = new UserDto(user.getId(), user.getUsername(), user.getAge(), user.getContact(), user.getIntroduction(), user.getAvatar(), user.getType());
+        UserDto userDto = new UserDto(user.getId(), user.getUsername(), user.getAge(), user.getContact(), user.getIntroduction(), user.getAvatar(), user.getType(), user.getBanned());
         return userDto;
     }
 
@@ -82,5 +87,37 @@ public class UserServiceImpl implements UserService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public List<UserDto> getUserList(Pageable pageable) {
+        Page<User> users = userDao.findAll(pageable);
+        List<UserDto> userDtos = new ArrayList<>();
+        for (User user : users) {
+            UserDto userDto = new UserDto(user.getId(), user.getUsername(), user.getAge(), user.getContact(), user.getIntroduction(), user.getAvatar(), user.getType(), user.getBanned());
+            userDtos.add(userDto);
+        }
+        return userDtos;
+    }
+
+    @Override
+    public Integer getUsersNum() {
+        return userDao.getUsersNum();
+    }
+
+    @Override
+    public Boolean banUser(int id) {
+        User user = userDao.findById(id);
+        user.setBanned(true);
+        userDao.save(user);
+        return true;
+    }
+
+    @Override
+    public Boolean liftUser(int id) {
+        User user = userDao.findById(id);
+        user.setBanned(false);
+        userDao.save(user);
+        return true;
     }
 }

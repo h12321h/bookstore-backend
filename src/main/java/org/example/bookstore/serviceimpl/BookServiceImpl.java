@@ -28,9 +28,9 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<Book> searchBook(String type, String query) {
+    public List<Book> searchBook(String type, String query,Pageable pageable) {
         if (type.equals("title")) {
-            return bookDao.findByTitle(query);
+            return bookDao.findByTitle(query,pageable).getContent();
         } else if (type.equals("author")) {
             return bookDao.findByAuthor(query);
         } else if (type.equals("publisher")) {
@@ -43,5 +43,20 @@ public class BookServiceImpl implements BookService {
     @Override
     public Integer getBooksNum() {
         return bookDao.getBooksNum();
+    }
+
+    @Override
+    public Integer getNumByTitle(String title) {
+        return bookDao.getNumByTitle(title);
+    }
+
+    @Override
+    public Boolean deleteBook(int id) {
+        return bookDao.deleteBook(id);
+    }
+
+    @Override
+    public void saveBook(Book book) {
+        bookDao.saveBook(book);
     }
 }

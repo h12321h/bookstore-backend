@@ -10,10 +10,12 @@ public class UserDto {
     private String avatar;
     private Boolean type;
 
+    private Boolean banned;
+
     public UserDto () {
     }
 
-    public UserDto (Integer id, String username, Integer age, String contact, String introduction, String avatar, Boolean type) {
+    public UserDto(Integer id, String username, Integer age, String contact, String introduction, String avatar, Boolean type, Boolean banned) {
         this.id = id;
         this.username = username;
         this.age = age;
@@ -21,6 +23,15 @@ public class UserDto {
         this.introduction = introduction;
         this.avatar = avatar;
         this.type = type;
+        this.banned = banned;
+    }
+
+    public Boolean getBanned() {
+        return banned;
+    }
+
+    public void setBanned(Boolean banned) {
+        this.banned = banned;
     }
 
     public Integer getId() {
