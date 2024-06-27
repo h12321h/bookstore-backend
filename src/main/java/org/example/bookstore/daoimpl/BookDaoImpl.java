@@ -53,6 +53,7 @@ public class BookDaoImpl implements BookDao {
         Book book = bookRepository.findById(id).orElse(null);
         if (book != null) {
             book.setDeleted(true);
+            book.setStock(0);
             bookRepository.save(book);
             return true;
         }

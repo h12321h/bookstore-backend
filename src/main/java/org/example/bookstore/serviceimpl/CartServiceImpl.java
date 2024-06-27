@@ -8,6 +8,7 @@ import org.example.bookstore.dao.BookDao;
 import org.example.bookstore.entity.User;
 import org.example.bookstore.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,10 +26,15 @@ public class CartServiceImpl implements CartService {
     private UserDao userDao;
 
     @Override
-    public List<Cart> findCartByUserId(int userId) {
+    public List<Cart> findCartByUserId(int userId, Pageable pageable) {
         //根据外键查找购物车中的书籍
+        return cartDao.findCartByUserIdAndPage(userId, pageable);
+    }
+
+    @Override
+    public int findCartNumByUserId(Integer userId) {
         List<Cart> carts = cartDao.findCartByUserId(userId);
-        return cartDao.findCartByUserId(userId);
+        return carts.size();
     }
 
     @Override
