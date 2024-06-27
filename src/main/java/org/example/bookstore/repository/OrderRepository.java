@@ -13,16 +13,16 @@ import java.util.Date;
 import java.util.List;
 
 public interface OrderRepository extends JpaRepository<Order, Integer> {
-    List<Order> findByUserId(int userId);
+    Page<Order> findByUserId(int userId, Pageable pageable);
 
     @Query("SELECT DISTINCT o FROM Order o JOIN o.orderItems oi WHERE o.user.id=:userId AND oi.book.title = :bookName")
-    List<Order> findByUserIdAndBookName(@Param("userId") int userId, @Param("bookName") String bookName);
+    Page<Order> findByUserIdAndBookName(@Param("userId") int userId, @Param("bookName") String bookName, Pageable pageable);
 
     @Query("SELECT DISTINCT o FROM Order o WHERE o.user.id=:userId AND o.orderDate BETWEEN :startDate AND :endDate")
-    List<Order> findByUserIdAndDate(@Param("userId") int userId, @Param("startDate") Date startDate, @Param("endDate") Date endDate);
+    Page<Order> findByUserIdAndDate(@Param("userId") int userId, @Param("startDate") Date startDate, @Param("endDate") Date endDate, Pageable pageable);
 
     @Query("SELECT DISTINCT o FROM Order o JOIN o.orderItems oi WHERE o.user.id=:userId AND oi.book.title = :bookName AND o.orderDate BETWEEN :startDate AND :endDate")
-    List<Order> findByUserIdAndBookNameAndDate(@Param("userId") int userId, @Param("bookName") String bookName, @Param("startDate") Date startDate, @Param("endDate") Date endDate);
+    Page<Order> findByUserIdAndBookNameAndDate(@Param("userId") int userId, @Param("bookName") String bookName, @Param("startDate") Date startDate, @Param("endDate") Date endDate, Pageable pageable);
 
     @Query("SELECT oi.book.title, SUM(oi.quantity), SUM(oi.quantity * oi.price) " +
             "FROM OrderItem oi JOIN oi.order o " +
@@ -92,4 +92,15 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
             "JOIN oi.order o " +
             "WHERE o.user.id = :userId AND o.orderDate BETWEEN :startDate AND :endDate")
     BigDecimal getBookStatisticPrice(Integer userId, Date startDate, Date endDate);
+
+    @Query("SELECT COUNT(o) " +
+            "FROM Order o " +
+            "WHERE o.user.id = :userId AND o.orderDate BETWEEN :startDate AND :endDate")
+    Integer getOrdersNumByUserIdAndDate(Integer userId, Date startDate, Date endDate);
+
+    @Query("SELECT COUNT(o) " +
+            "FROM Order o " +
+            "JOIN o.orderItems oi " +
+            "WHERE o.user.id = :userId AND o.orderDate BETWEEN :startDate AND :endDate AND oi.book.title = :bookName")
+    Integer getOrdersNumByUserIdAndDateAndBookName(Integer userId, Date startDate, Date endDate, String bookName);
 }

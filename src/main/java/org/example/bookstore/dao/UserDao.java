@@ -16,4 +16,6 @@ public interface UserDao {
     Page<User> findAll(Pageable pageable);
 
     Integer getUsersNum();
+
+    Boolean checkUser(String username, String password);
 }

@@ -9,13 +9,13 @@ import java.util.Date;
 import java.util.List;
 
 public interface OrderService {
-    List<OrderDto> findByUserId(int userId);
+    List<OrderDto> findByUserId(int userId, Pageable pageable);
     Boolean saveOrder(List<BuyItem> buyItemList, Integer userId, String name, String address, String phone);
     void deleteOrder(Integer id);
 
-    List<OrderDto> findByUserIdAndBookName(Integer userId, String bookName);
-    List<OrderDto> findByUserIdAndDate(Integer userId, Date startDate, Date endDate);
-    List<OrderDto> findByUserIdAndBookNameAndDate(Integer userId, String bookName, Date startDate, Date endDate);
+    List<OrderDto> findByUserIdAndBookName(Integer userId, String bookName, Pageable pageable);
+    List<OrderDto> findByUserIdAndDate(Integer userId, Date startDate, Date endDate, Pageable pageable);
+    List<OrderDto> findByUserIdAndBookNameAndDate(Integer userId, String bookName, Date startDate, Date endDate, Pageable pageable);
 
     List<BookStatisticDto> getBookStatistic(Integer userId, Date startDate, Date endDate);
 
@@ -47,4 +47,8 @@ public interface OrderService {
     Integer getBookStatisticNum(Integer userId, Date startDate, Date endDate);
 
     BigDecimal getBookStatisticPrice(Integer userId, Date startDate, Date endDate);
+
+    Integer getOrdersNumByUserIdAndDate(Integer userId, Date startDate, Date endDate);
+
+    Integer getOrdersNumByUserIdAndDateAndBookName(Integer userId, Date startDate, Date endDate, String bookName);
 }

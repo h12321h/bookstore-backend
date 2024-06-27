@@ -2,6 +2,8 @@ package org.example.bookstore.daoimpl;
 
 import org.example.bookstore.dao.UserDao;
 import org.example.bookstore.entity.User;
+import org.example.bookstore.entity.UserAuth;
+import org.example.bookstore.repository.UserAuthRepository;
 import org.example.bookstore.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,6 +16,9 @@ import java.util.List;
 public class UserDaoImpl implements UserDao{
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserAuthRepository userAuthRepository;
 
     @Override
     public User findById(int id) {
@@ -45,5 +50,12 @@ public class UserDaoImpl implements UserDao{
     @Override
     public Integer getUsersNum() {
         return userRepository.getUsersNum();
+    }
+
+    @Override
+    public Boolean checkUser(String username, String password) {
+        User user = userRepository.findByUsername(username);
+        return userAuthRepository.checkUser(user.getId(), password)!=null;
+
     }
 }

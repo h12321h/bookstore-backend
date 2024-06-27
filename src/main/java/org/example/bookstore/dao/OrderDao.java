@@ -5,20 +5,19 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
-import java.net.ContentHandler;
 import java.util.Date;
 import java.util.List;
 
 public interface OrderDao {
-    List<Order> findByUserId(int userId);
+    Page<Order> findByUserId(int userId, Pageable pageable);
     void saveOrder(Order order);
     void deleteById(int id);
 
-    List<Order> findByUserIdAndBookName(int userId, String bookName);
+    Page<Order> findByUserIdAndBookName(int userId, String bookName, Pageable pageable);
 
-    List<Order> findByUserIdAndDate(int userId, Date startDate, Date endDate);
+    Page<Order> findByUserIdAndDate(int userId, Date startDate, Date endDate, Pageable pageable);
 
-    List<Order> findByUserIdAndBookNameAndDate(int userId, String bookName, Date startDate, Date endDate);
+    Page<Order> findByUserIdAndBookNameAndDate(int userId, String bookName, Date startDate, Date endDate, Pageable pageable);
 
     List<Object[]> getBookStatisticByUserId(int userId, Date startDate, Date endDate);
 
@@ -49,4 +48,8 @@ public interface OrderDao {
     Integer getBookStatisticNum(Integer userId, Date startDate, Date endDate);
 
     BigDecimal getBookStatisticPrice(Integer userId, Date startDate, Date endDate);
+
+    Integer getOrdersNumByUserIdAndDate(Integer userId, Date startDate, Date endDate);
+
+    Integer getOrdersNumByUserIdAndDateAndBookName(Integer userId, Date startDate, Date endDate, String bookName);
 }

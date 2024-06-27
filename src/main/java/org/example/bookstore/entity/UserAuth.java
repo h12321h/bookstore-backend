@@ -22,20 +22,10 @@ public class UserAuth {
     @Column(name = "`email`")
     private String email;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "`user_id`", referencedColumnName = "`id`", nullable = false)
-    private User user;
-
+    @Column(name = "`user_id`")
+    private Integer userId;
 
     public UserAuth() {
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
 
@@ -55,25 +45,30 @@ public class UserAuth {
         this.email = email;
     }
 
-    public User getUser() {
-        return user;
+    public Integer getId() {
+        return id;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public UserAuth(Integer id, String password, String email) {
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public void setId(Integer id) {
         this.id = id;
-        this.password = password;
-        this.email = email;
     }
 
-    public UserAuth(Integer id, String password, String email, User user) {
-        this.id = id;
-        this.password = password;
-        this.email = email;
-        this.user = user;
+    @Override
+    public String toString() {
+        return "UserAuth{" +
+                "id=" + id +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", userId=" + userId +
+                '}';
     }
 
 

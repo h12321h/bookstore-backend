@@ -2,9 +2,12 @@ package org.example.bookstore.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 @Table(name = "`user`")
@@ -39,11 +42,21 @@ public class User {
     @Column(name="`banned`")
     private Boolean banned;
 
-    @OneToOne(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private UserAuth userAuth;
+//    @JsonIgnore
+//    @OneToOne(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+//    private UserAuth userAuth;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<Order> orders;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<Cart> carts;
     public User() {
     }
+
+
 
     public Boolean getType() {
         return type;
@@ -53,13 +66,6 @@ public class User {
         this.type = type;
     }
 
-    public UserAuth getUserAuth() {
-        return userAuth;
-    }
-
-    public void setUserAuth(UserAuth userAuth) {
-        this.userAuth = userAuth;
-    }
 
     public Integer getId() {
         return id;
@@ -129,7 +135,6 @@ public class User {
                 ", introduction='" + introduction + '\'' +
                 ", type=" + type +
                 ", banned=" + banned +
-                ", userAuth=" + userAuth +
                 '}';
     }
 }

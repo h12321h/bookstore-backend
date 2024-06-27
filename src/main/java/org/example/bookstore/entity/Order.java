@@ -44,7 +44,7 @@ public class Order {
 //    @Column(name = "`user_id`", insertable = false, updatable = false)
 //    private Integer userId;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL , orphanRemoval = true)
     private List<OrderItem> orderItems;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

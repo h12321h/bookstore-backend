@@ -75,6 +75,19 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
+    public Boolean checkStock(int id, int quantity) {
+        Book book = bookRepository.findById(id).orElse(null);
+        if (book == null) {
+            return false;
+        }
+        if(quantity<=0){
+            return false;
+        }
+        int stock = book.getStock();
+        return stock >= quantity;
+    }
+
+    @Override
     public Integer getBooksNum() {
         return bookRepository.getBooksNum();
     }

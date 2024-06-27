@@ -2,13 +2,12 @@ package org.example.bookstore.daoimpl;
 
 import org.example.bookstore.dao.OrderDao;
 import org.example.bookstore.entity.Order;
-import org.example.bookstore.repository.OrderItemRepository;
+//import org.example.bookstore.repository.OrderItemRepository;
 import org.example.bookstore.repository.OrderRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -21,8 +20,8 @@ public class OrderDaoImpl implements OrderDao {
 
 
     @Override
-    public List<Order> findByUserId(int userId) {
-        return orderRepository.findByUserId(userId);
+    public Page<Order> findByUserId(int userId, Pageable pageable) {
+        return orderRepository.findByUserId(userId, pageable);
     }
 
     @Override
@@ -36,24 +35,35 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public List<Order> findByUserIdAndBookName(int userId, String bookName) {
-        return orderRepository.findByUserIdAndBookName(userId, bookName);
+    public Page<Order> findByUserIdAndBookName(int userId, String bookName, Pageable pageable) {
+        return orderRepository.findByUserIdAndBookName(userId, bookName, pageable);
     }
 
     @Override
-    public List<Order> findByUserIdAndDate(int userId, Date startDate, Date endDate) {
-        return orderRepository.findByUserIdAndDate(userId, startDate, endDate);
+    public Page<Order> findByUserIdAndDate(int userId, Date startDate, Date endDate, Pageable pageable) {
+        return orderRepository.findByUserIdAndDate(userId, startDate, endDate, pageable);
     }
 
     @Override
-    public List<Order> findByUserIdAndBookNameAndDate(int userId, String bookName, Date startDate, Date endDate) {
-        return orderRepository.findByUserIdAndBookNameAndDate(userId, bookName, startDate, endDate);
+    public Page<Order> findByUserIdAndBookNameAndDate(int userId, String bookName, Date startDate, Date endDate, Pageable pageable) {
+        return orderRepository.findByUserIdAndBookNameAndDate(userId, bookName, startDate, endDate, pageable);
     }
 
     @Override
     public List<Object[]> getBookStatisticByUserId(int userId, Date startDate, Date endDate) {
         return orderRepository.getBookStatisticByUserId(userId, startDate, endDate);
     }
+
+    @Override
+    public Integer getOrdersNumByUserIdAndDate(Integer userId, Date startDate, Date endDate) {
+        return orderRepository.getOrdersNumByUserIdAndDate(userId,startDate, endDate);
+    }
+
+    @Override
+    public Integer getOrdersNumByUserIdAndDateAndBookName(Integer userId, Date startDate, Date endDate, String bookName) {
+        return orderRepository.getOrdersNumByUserIdAndDateAndBookName(userId,startDate, endDate, bookName);
+    }
+
 
     @Override
     public Page<Order> findAll(Pageable pageable) {

@@ -20,6 +20,7 @@ public interface BookDao {
     Boolean deleteBook(int id);
 
     Boolean decreaseStock(int id, int quantity);
+    Boolean checkStock(int id, int quantity);
 
     Integer getBooksNum();
 
