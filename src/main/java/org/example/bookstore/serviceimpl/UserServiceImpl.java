@@ -82,6 +82,7 @@ public class UserServiceImpl implements UserService {
         if (session != null ) {
             Integer id = (Integer) session.getAttribute("userId");
             User user = userDao.findById(userDto.getId());
+            user.setUsername(userDto.getUsername());
             user.setAge(userDto.getAge());
             user.setContact(userDto.getContact());
             user.setIntroduction(userDto.getIntroduction());
