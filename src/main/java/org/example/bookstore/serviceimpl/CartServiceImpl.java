@@ -38,14 +38,18 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public boolean addBookToCart(int user_id,int book_id){
+    public String addBookToCart(int user_id, int book_id){
         Optional<Cart> matchingCart = cartDao.findCartByUserId(user_id).stream().filter(cart -> cart.getBook().getId() == book_id).findFirst();
         if(matchingCart.isPresent()){
             Cart cart = matchingCart.get();
             cart.setQuantity(cart.getQuantity()+1);
             cartDao.saveCart(cart);
-            return true;
+            return "add";
         }else{
+            Integer cartSize = cartDao.findCartByUserId(user_id).size();
+            if(cartSize>=100){
+                return "full";
+            }
             Book book = bookDao.findBookById(book_id);
             User user = userDao.findById(user_id);
             Cart cart = new Cart();
@@ -55,7 +59,7 @@ public class CartServiceImpl implements CartService {
             cart.setBook(book);
             cart.setQuantity(1);
             cartDao.saveCart(cart);
-            return false;
+            return "success";
         }
     }
 

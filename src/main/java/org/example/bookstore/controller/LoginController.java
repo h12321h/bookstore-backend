@@ -1,12 +1,16 @@
 package org.example.bookstore.controller;
 
 import org.example.bookstore.entity.User;
+import org.example.bookstore.service.TimerService;
 import org.example.bookstore.service.UserService;
 import org.example.bookstore.utils.SessionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.web.context.WebApplicationContext;
+
+import java.time.Duration;
 import java.util.Map;
 
 
@@ -14,12 +18,14 @@ import java.util.Map;
 public class LoginController {
 
     @Autowired
-    private UserService userService;
+    private WebApplicationContext applicationContext; // 动态获取 Bean 的上下文
 
     @PostMapping("/login")
     public Integer login(@RequestParam("username") String username, @RequestParam("password") String password) {
         System.out.println("Login: " + username);
         System.out.println("Password: " + password);
+        UserService userService = applicationContext.getBean(UserService.class); // 动态获取 UserService
+
         if (userService.checkUser(username, password)) {
             User user= userService.findUserByUsername(username);
             Integer id = user.getId();
@@ -27,6 +33,9 @@ public class LoginController {
             if(user.getBanned()){
                 return -1;
             }
+            // 开始会话计时
+            TimerService timerService = applicationContext.getBean(TimerService.class); // 动态获取 TimerService
+            timerService.startTimer();
             //System.out.println("User ID: " + id);
             SessionUtils.setSession(id,isAdmin);
             return id;
@@ -36,14 +45,20 @@ public class LoginController {
     }
 
     @PostMapping("/logout")
-    public String logout(HttpServletRequest request) {
+    public long logout(HttpServletRequest request) {
         HttpSession session = SessionUtils.getSession();
         if (session != null) {
-            //清空session
+            // 停止计时器并获取会话时间
+            TimerService timerService = applicationContext.getBean(TimerService.class); // 动态获取 TimerService
+            Duration sessionDuration = timerService.stopTimer();
+
+            // 清空session
             session.invalidate();
 
+            // 返回会话持续时间（以分钟为单位）
+            return sessionDuration.toMinutes();
         }
-        return "success";
+        return 0;
     }
 
     @GetMapping("/check_login")

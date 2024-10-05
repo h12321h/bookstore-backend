@@ -53,13 +53,7 @@ public class CartController {
             // System.out.println("order  ID: " + user_id);
         }
         Integer book_id = request.getBookId();
-        boolean state=cartService.addBookToCart(user_id, book_id);
-        System.out.println(state);
-        if(state){
-           return "add";
-        }else{
-            return "success";
-        }
+        return cartService.addBookToCart(user_id, book_id);
     }
 
     @PostMapping("/cart/delete")

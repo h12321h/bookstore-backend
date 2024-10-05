@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface CartService {
     List<Cart> findCartByUserId(int user_id, Pageable pageable);
-    boolean addBookToCart(int user_id,int book_id);
+    String addBookToCart(int user_id, int book_id);
     void deleteBookFromCart(int id);
     void updateBookQuantity(int id,int quantity);
 

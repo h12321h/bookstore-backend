@@ -9,9 +9,6 @@ import jakarta.persistence.*;
 @Table(name = "`cart`")
 @Access(value = AccessType.FIELD)
 @JsonIgnoreProperties(value = {"handler","hibernateLazyInitializer","fieldHandler"})
-//@JsonIdentityInfo(
-//        generator = ObjectIdGenerators.PropertyGenerator.class,
-//        property = "id")
 public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

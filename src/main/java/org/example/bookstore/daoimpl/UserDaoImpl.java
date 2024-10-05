@@ -55,7 +55,8 @@ public class UserDaoImpl implements UserDao{
     @Override
     public Boolean checkUser(String username, String password) {
         User user = userRepository.findByUsername(username);
-        return userAuthRepository.checkUser(user.getId(), password)!=null;
-
+        if(user == null)
+            return false;
+        return userAuthRepository.checkUser(user.getId(), password);
     }
 }
