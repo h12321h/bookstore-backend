@@ -1,6 +1,7 @@
 package org.example.bookstore.serviceimpl;
 
 import org.example.bookstore.dao.OrderDao;
+import org.example.bookstore.dao.OrderItemDao;
 import org.example.bookstore.dao.UserDao;
 import org.example.bookstore.dao.BookDao;
 import org.example.bookstore.dto.*;
@@ -11,6 +12,8 @@ import org.example.bookstore.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -22,8 +25,8 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private OrderDao orderDao;
 
-//    @Autowired
-//    private OrderItemDao orderItemDao;
+    @Autowired
+    private OrderItemDao orderItemDao;
 
     @Autowired
     private UserDao userDao;
@@ -63,6 +66,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public Boolean saveOrder(List<BuyItem> buyItemList, Integer userId, String name, String address, String phone ) {
         Order order = new Order();
         BigDecimal totalPrice = BigDecimal.valueOf(0);
@@ -82,6 +86,8 @@ public class OrderServiceImpl implements OrderService {
         orderDao.saveOrder(order);
         List<OrderItem> orderItemList = new ArrayList<>();
 
+        //int result=10/0;
+
         if (buyItemList != null) {
             for (BuyItem buyItem : buyItemList) {
                 OrderItem orderItem = new OrderItem();
@@ -93,11 +99,13 @@ public class OrderServiceImpl implements OrderService {
                 if(!bookDao.decreaseStock(buyItem.getBookId(), buyItem.getQuantity())){
                     return false;
                 }
+                orderItemDao.saveOrderItem(orderItem);
                 orderItemList.add(orderItem);
                 totalPrice = totalPrice.add(buyItem.getPrice().multiply(BigDecimal.valueOf(buyItem.getQuantity())));
                // totalPrice+=orderItem.getPrice().multiply(BigDecimal.valueOf(orderItem.getQuantity()));
             }
         }
+        //int result=10/0;
         order.setOrderItems(orderItemList);
         order.setTotalPrice(totalPrice);
         orderDao.saveOrder(order);

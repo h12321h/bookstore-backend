@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -25,7 +27,9 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
+    @Transactional//(isolation = Isolation.READ_UNCOMMITTED)
     public void saveOrder(Order order) {
+        //int result=10/0;
         orderRepository.save(order);
     }
 
