@@ -1,15 +1,28 @@
 package org.example.bookstore.listener;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
 public class OrderResultListener {
 
-    // 监听 order_result_topic 主题中的消息
+    // 注入 WebSocket 消息发送工具类
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
+
+    // 监听 Kafka 的 "order_result_topic" 主题
     @KafkaListener(topics = "order_result_topic", groupId = "order_result_group")
     public void listenOrderResultMessage(String message) {
-        // 打印收到的处理结果到控制台
+        // 当监听到消息时，打印消息
         System.out.println("收到订单处理结果: " + message);
+
+        String[] messageParts = message.split(":");
+        String userId = messageParts[0];
+        String orderResult = messageParts[1];
+
+        // 通过 WebSocket 向前端发送消息
+        messagingTemplate.convertAndSend("/topic/orderResult/" + userId, orderResult);
     }
 }

@@ -27,7 +27,7 @@ public class OrderListener {
         System.out.println("收到订单消息: " + message);
 
         // 将消息解析为 AddOrderRequest 对象
-        AddOrderRequest request = parseMessage(message);  // 这里假设有合适的解析逻辑
+        AddOrderRequest request = parseMessage(message);  // 有合适的解析逻辑
 
         // 调用订单服务处理订单
         boolean success = orderService.saveOrder(
@@ -38,8 +38,8 @@ public class OrderListener {
                 request.getPhone()
         );
 
-        // 构建处理结果消息
-        String resultMessage = success ? "订单处理成功" : "订单处理失败：库存不足";
+        // 构建处理结果消息，包含 userId 和处理结果
+        String resultMessage = request.getUserId() + ":" + (success ? "订单处理成功" : "订单处理失败，库存不足");
 
         // 将处理结果发送到 Kafka 的 order_result_topic 主题
         kafkaTemplate.send(ORDER_RESULT_TOPIC, resultMessage);
