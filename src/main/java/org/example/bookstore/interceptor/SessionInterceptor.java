@@ -12,9 +12,9 @@ public class SessionInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         HttpSession session = request.getSession(false);
         if (session != null) {
-            System.out.println(session.getId());
-            System.out.println("SessionInterceptor is invoked");
-            System.out.println("Session ID: " + session.getAttribute("userId"));
+           // System.out.println(session.getId());
+           // System.out.println("SessionInterceptor is invoked");
+           // System.out.println("Session ID: " + session.getAttribute("userId"));
 
             // 检查是否存在 userId
             if (session.getAttribute("userId") != null) {
@@ -27,7 +27,7 @@ public class SessionInterceptor implements HandlerInterceptor {
                         return true;
                     } else {
                         // isAdmin不存在或为false，拒绝访问
-                        System.out.println("Admin access denied");
+                        // System.out.println("Admin access denied");
                         response.setStatus(403);
                         return false;
                     }
@@ -37,7 +37,7 @@ public class SessionInterceptor implements HandlerInterceptor {
             }
         }
 
-        System.out.println("Session is not logged in yet");
+       // System.out.println("Session is not logged in yet");
         response.setStatus(401);
         return false;
     }

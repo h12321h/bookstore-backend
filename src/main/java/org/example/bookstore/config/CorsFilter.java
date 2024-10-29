@@ -17,7 +17,7 @@ public class CorsFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        System.out.println("CorsFilter is invoked");
+       // System.out.println("CorsFilter is invoked");
         HttpServletResponse res = (HttpServletResponse) response;
         res.addHeader("Access-Control-Allow-Credentials", "true");
         res.addHeader("Access-Control-Allow-Origin", "http://localhost:3000");
@@ -28,7 +28,7 @@ public class CorsFilter implements Filter {
 
         // 如果是OPTIONS则结束请求
         if (OPTIONS.equals(((HttpServletRequest) request).getMethod())) {
-            System.out.println("CorsFilter is invoked");
+          //  System.out.println("CorsFilter is invoked");
             response.getWriter().println("ok");
             return;
         }

@@ -11,7 +11,7 @@ public class SessionUtils {
         if (servletRequestAttributes != null) {
             HttpServletRequest request = servletRequestAttributes.getRequest();
             HttpSession session = request.getSession();
-            System.out.println("set Session ID: " + session.getId());
+          //  System.out.println("set Session ID: " + session.getId());
             session.setAttribute("userId", id);
             session.setAttribute("isAdmin",isAdmin);
         }

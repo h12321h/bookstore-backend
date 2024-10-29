@@ -42,9 +42,9 @@ public class UserController {
         HttpSession session = SessionUtils.getSession();
         if (session != null ) {
             id=(Integer) session.getAttribute("userId");
-            System.out.println("book Session ID: " + session.getId());
+           // System.out.println("book Session ID: " + session.getId());
         }
-        System.out.println("Searching User: " + id);
+        //System.out.println("Searching User: " + id);
         return userService.findUserById(id);
     }
     @PostMapping(value = "/update_user")

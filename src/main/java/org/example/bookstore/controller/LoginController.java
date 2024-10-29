@@ -22,8 +22,8 @@ public class LoginController {
 
     @PostMapping("/login")
     public Integer login(@RequestParam("username") String username, @RequestParam("password") String password) {
-        System.out.println("Login: " + username);
-        System.out.println("Password: " + password);
+       // System.out.println("Login: " + username);
+      //  System.out.println("Password: " + password);
         UserService userService = applicationContext.getBean(UserService.class); // 动态获取 UserService
 
         if (userService.checkUser(username, password)) {
