@@ -41,7 +41,7 @@ public class BookServiceImpl implements BookService {
                 String cacheKey = getBookCacheKey(id);
 
                 // 缓存每本书的详细信息
-                ops.setIfAbsent(cacheKey, book, 10, TimeUnit.MINUTES);
+                ops.setIfAbsent(cacheKey, book, 2, TimeUnit.MINUTES);
 
                 // 将书籍ID存入Sorted Set中，用ID作为score实现自然排序
                 zSetOps.add(BOOK_IDS_KEY, id, id);
@@ -49,7 +49,7 @@ public class BookServiceImpl implements BookService {
                 System.out.println("Cached book: " + id);
             }
 
-            ops.setIfAbsent(BOOK_CACHE_KEY_NUM, books.size(), 10, TimeUnit.MINUTES);
+            ops.setIfAbsent(BOOK_CACHE_KEY_NUM, books.size(), 2, TimeUnit.MINUTES);
         } catch (Exception e) {
             System.out.println("Redis is not available. Caching all books to Redis failed.");
         }
@@ -76,7 +76,7 @@ public class BookServiceImpl implements BookService {
             // 缓存中没有则从数据库获取并缓存
             book = bookDao.findBookById(id);
             if (book != null) {
-                ops.set(cacheKey, book, 10, TimeUnit.MINUTES); // 设置缓存有效期为10分钟
+                ops.set(cacheKey, book, 2, TimeUnit.MINUTES); // 设置缓存有效期为10分钟
                 System.out.println("Caching book: " + id);
             }
 
@@ -85,7 +85,6 @@ public class BookServiceImpl implements BookService {
             System.out.println("Redis is not available. Reading from database.");
             return bookDao.findBookById(id);
         }
-
     }
 
     @Override
@@ -120,7 +119,7 @@ public class BookServiceImpl implements BookService {
                     // 如果缓存中没有，则从数据库获取并更新缓存
                     book = bookDao.findBookById(id);
                     if (book != null) {
-                        ops.set(cacheKey, book, 10, TimeUnit.MINUTES);
+                        ops.set(cacheKey, book, 2, TimeUnit.MINUTES);
                         System.out.println("Caching book: " + id);
                     }
                 }
@@ -220,7 +219,7 @@ public class BookServiceImpl implements BookService {
             }
 
             num = bookDao.getBooksNum();
-            ops.set(BOOK_CACHE_KEY_NUM, num, 10, TimeUnit.MINUTES);
+            ops.set(BOOK_CACHE_KEY_NUM, num, 2, TimeUnit.MINUTES);
             System.out.println("Caching book number.");
             return num;
         } catch (Exception e) {
@@ -256,7 +255,7 @@ public class BookServiceImpl implements BookService {
         bookDao.saveBook(book);
         try{// 更新缓存
             String cacheKey = getBookCacheKey(book.getId());
-            redisTemplate.opsForValue().set(cacheKey, book, 10, TimeUnit.MINUTES);
+            redisTemplate.opsForValue().set(cacheKey, book, 2, TimeUnit.MINUTES);
             // 将书籍ID添加到Sorted Set中
             redisTemplate.opsForZSet().add(BOOK_IDS_KEY, book.getId(), book.getId()); // 使用ID作为score排序
             System.out.println("Saved book to cache and added to Sorted Set: " + book.getId());

@@ -38,7 +38,8 @@ public class Book {
     @Column(name = "`stock`")
     private Integer stock;
 
-    @Column(name = "`cover_image`")
+//    @Column(name = "`cover_image`")
+    @Transient
     private String cover_image;
 
     @Column(name = "`isbn`")
