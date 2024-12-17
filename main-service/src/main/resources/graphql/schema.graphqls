@@ -1,0 +1,16 @@
+type Query {
+    searchBookByTitle(title: String!, page: Int!, size: Int!): [Book]
+}
+
+type Book {
+    id: ID
+    title: String
+    author: String
+    publisher: String
+    introduction: String
+    price: Float
+    stock: Int
+    cover_image: String
+    isbn: String
+    deleted: Boolean
+}

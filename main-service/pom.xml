@@ -113,6 +113,12 @@
             <artifactId>spring-boot-starter-data-neo4j</artifactId>
         </dependency>
 
+        <!-- Spring Boot Starter for graphql -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-graphql</artifactId>
+        </dependency>
+
     </dependencies>
 
     <dependencyManagement>

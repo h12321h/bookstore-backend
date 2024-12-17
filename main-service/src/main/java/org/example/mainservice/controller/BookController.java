@@ -2,6 +2,8 @@ package org.example.mainservice.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.web.bind.annotation.*;
 import org.example.mainservice.entity.Book;
 import org.example.mainservice.service.BookService;
@@ -54,5 +56,17 @@ public class BookController {
         book.setDeleted(false);
         bookService.saveBook(book);
         return "success";
+    }
+
+    @QueryMapping
+    public List<Book> searchBookByTitle(@Argument String title, @Argument int page, @Argument int size) {
+        System.out.println("searchBookByTitle");
+        System.out.println(title);
+        System.out.println(page);
+        System.out.println(size);
+        Pageable pageable = PageRequest.of(page, size);
+        List<Book> result = bookService.searchBook("title",title,pageable);
+        System.out.println(result);
+        return result;
     }
 }

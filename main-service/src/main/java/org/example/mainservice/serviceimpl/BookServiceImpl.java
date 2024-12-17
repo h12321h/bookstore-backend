@@ -152,6 +152,7 @@ public class BookServiceImpl implements BookService {
                 int id = (int) idObj;
                 String cacheKey = getBookCacheKey(id);
                 Book book = (Book) ops.get(cacheKey);
+                System.out.println("Retrieved book from cache: " + id + " " + book.getTitle());
 
                 // 如果缓存中没有该书籍数据，跳过此书
                 if (book == null) {
@@ -186,7 +187,8 @@ public class BookServiceImpl implements BookService {
             if (start > end) {
                 return new ArrayList<>(); // 若起始索引超过总结果数，返回空列表
             }
-
+            System.out.println("Retrieved books from cache: " + start + " to " + end);
+            System.out.println(books);
             return books.subList(start, end);
         } catch (Exception e) {
             System.out.println("Redis is not available. Reading from database.");
