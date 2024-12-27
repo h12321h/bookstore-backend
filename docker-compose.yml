@@ -63,8 +63,26 @@ services:
       SPRING_NEO4J_URI: bolt://neo4j:7687
       SPRING_NEO4J_AUTHENTICATION_USERNAME: neo4j
       SPRING_NEO4J_AUTHENTICATION_PASSWORD: 123212321hh
+#    volumes:
+#      - ./book-descriptions:/app/data
     networks:
       - ebook-network
+
+#  spark-service:
+#    build:
+#      context: spark-service
+#      dockerfile: Dockerfile
+#    container_name: spark-service
+#    ports:
+#      - "8093:8093"
+#    depends_on:
+#      - eureka-server
+#      - gateway
+#    volumes:
+#      - ./book-descriptions:/app/data
+#    networks:
+#      - ebook-network
+
 
   # 作者服务
   author-service:
@@ -142,6 +160,7 @@ services:
     container_name: neo4j
     ports:
       - "7688:7687"
+      - "7475:7474"
     environment:
       NEO4J_AUTH: neo4j/123212321hh
     volumes:

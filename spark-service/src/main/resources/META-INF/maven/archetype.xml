@@ -1,0 +1,9 @@
+<archetype>
+  <id>spark-service</id>
+  <sources>
+    <source>src/main/java/SparkServiceApplication.java</source>
+  </sources>
+  <testSources>
+    <source>src/test/java/SparkServiceApplicationTest.java</source>
+  </testSources>
+</archetype>

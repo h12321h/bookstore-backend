@@ -31,6 +31,9 @@ public class GatewayApplication {
 				.route("author-service-route", r -> r.path("/author/**")
 						.filters(f -> f.stripPrefix(1))
 						.uri("lb://AUTHOR-SERVICE"))
+				.route("spark-service-route", r -> r.path("/spark/**")
+						.filters(f -> f.stripPrefix(1))
+						.uri("http://localhost:8093"))
 				.build();
 	}
 
